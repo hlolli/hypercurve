@@ -1,0 +1,23 @@
+{
+  "name": "@hlolli/hypercurve",
+  "version": "0.0.0",
+  "description": "csound plugin by johannphilippe",
+  "main": "hypercurve.wasm",
+  "directories": {
+    "doc": "doc",
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hlolli/hypercurve.git"
+  },
+  "author": "johannphilippe",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/hlolli/hypercurve/issues"
+  },
+  "homepage": "https://github.com/hlolli/hypercurve#readme"
+}
