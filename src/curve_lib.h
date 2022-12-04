@@ -14,8 +14,12 @@
 #include<vector>
 #include"cubic_spline.h"
 
+#ifndef __wasi__
 #include"asciiplot/asciiplotter.h"
+#endif
+
 #include<complex>
+
 typedef std::complex<double> pnt;
 
 namespace  hypercurve {
@@ -186,7 +190,9 @@ public:
         : a(a_)
         , compensation(1. / process_diocles(1.0) )
     {
+        #ifndef __wasi__
         if(a_ <= 0.5) throw(std::runtime_error("Diocles curve : 'a' parameter must be > to 0.5"));
+        #endif
     }
     inline double process(double x) override
     {
@@ -368,8 +374,10 @@ public:
         : a(a_)
         , height(catenary_process(1))
     {
+        #ifndef __wasi__
         if(!(a>0))
             throw (std::runtime_error("Catenary curve : a must be > 0"));
+        #endif
     }
     double process(double x) override
     {
@@ -406,8 +414,10 @@ public:
         , w(std::sqrt((a*a) + (c*c)))
         , height(a + w)
     {
+        #ifndef __wasi__
         if( (a > c) || (a <= 0) || (c <= 0) || (c <  (a * 1.2)))
             throw(std::runtime_error("Conchal curve : a must be < c, c must be >= a * 1.2, a and c must be > 0"));
+        #endif
         max_x = a + (std::sqrt((a*a) + (c*c)));
     }
 
@@ -463,8 +473,10 @@ public:
         : a(a_)
         , b( std::abs(b_) )
     {
+        #ifndef __wasi__
         if( (a < 0) || (a <= b) )
             throw(std::runtime_error("a must be > abs(b), a must be > 0"));
+        #endif
     }
 
     void on_init() override
@@ -622,7 +634,9 @@ public:
 
     inline virtual double process(double) override
     {
+        #ifndef __wasi__
         throw(std::runtime_error("Unimplemented for Bezier curve"));
+        #endif
     }
 
     // This one should be implemented instead of the above one (if wanted to process single bezier point)
@@ -724,8 +738,10 @@ public:
     cubic_spline_curve(std::vector<point> cp)
         : _control_points( cp.size() + 2 )
     {
+        #ifndef __wasi__
         if(_control_points.size() < 3)
             throw(std::runtime_error("Control point list size must be >= 3"));
+        #endif
         std::move(cp.begin(), cp.end(), _control_points.begin() + 1);
         int n = _control_points.size() - 1;
         _spline_mem_size = (5 * n) + (3 * ( n + 1 )) + (n - 1)  + ( (n - 1) * n);
@@ -737,9 +753,10 @@ public:
     cubic_spline_curve(memory_vector<point> cp)
         : _control_points(  cp.size() + 2 )
     {
+        #ifndef __wasi__
         if(_control_points.size() < 3)
             throw(std::runtime_error("Control point list size must be >= 3"));
-
+        #endif
         int n = _control_points.size() - 1;
         _spline_mem_size = (5 * n) + (3 * ( n + 1 )) + (n - 1)  + ( (n - 1) * n);
         _spline_memory.resize(_spline_mem_size);
@@ -754,8 +771,10 @@ public:
         , _spline_memory_ptr(spline_memory)
         , _spline_mem_size(spline_mem_size)
     {
+        #ifndef __wasi__
         if(pts_size < 3)
             throw(std::runtime_error("Control point list size must be >= 3"));
+        #endif
     }
 
     ~cubic_spline_curve(){
@@ -927,4 +946,3 @@ protected:
 
 }
 #endif // CURVE_LIB_H
-

@@ -163,11 +163,13 @@ inline T scaled_log_point(T val, T min, T max) {
 // make sure x1 <= x <= x2
 inline double relative_position(double x1, double x2, double x)
 {
+    #ifndef __wasi__
     if(!(x >= x1 && x <= x2) || !(x1 < x2))
         throw(std::runtime_error( std::string("Make sure x1 <= x <= x2 and x1 < x2 \nx1 = ")
                                   + std::to_string(x1) + " & x = "
                                   + std::to_string(x) + " & x2 = "
                                   + std::to_string(x2)));
+    #endif
     const double factor = 1.0 / (x2 - x1);
     return (x * factor) - (x1 * factor);
 }
