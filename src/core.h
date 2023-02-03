@@ -10,7 +10,9 @@
 #include<vector>
 #include<memory>
 #include"curve_lib.h"
+#ifndef __wasi__
 #include"asciiplot/asciiplotter.h"
+#endif
 #include<iostream>
 #include<utility>
 namespace hypercurve {
@@ -193,6 +195,7 @@ public:
         return std::make_pair(min, max);
     }
 
+    #ifndef __wasi__
     void ascii_display(std::string name, std::string label, char marker)
     {
         AsciiPlotter plot(name, 80, 15);
@@ -200,6 +203,7 @@ public:
         plot.legend();
         plot.show();
     }
+    #endif
 
     double *get_samples() {return samples.data();}
     double get_sample_at(size_t i) {return samples[i];}

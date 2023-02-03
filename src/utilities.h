@@ -14,7 +14,9 @@
 #include<memory>
 #include<cstring>
 #include<functional>
+#ifndef __wasi__
 #include"fpng/src/fpng.h"
+#endif
 #include <random>
 #include<string>
 #include<vector>
@@ -393,6 +395,7 @@ void mirror(memory_vector<double>::iterator &it, size_t definition, double y_sta
 }
 
 
+#ifndef __wasi__
 // PNG utils
 
 //using color = std::array<uint8_t, 4>;
@@ -543,7 +546,7 @@ struct increment_map  : public std::unordered_map<int, T>
     size_t _index = 1;
 };
 
-
+#endif
 
 
 }

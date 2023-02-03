@@ -21,20 +21,14 @@ in stdenv.mkDerivation {
   buildPhase = ''
 
     echo "Compile hypercurve.wasm"
-    ${wasi-sdk}/bin/clang  \
-      -fPIC -fno-exceptions -fno-rtti \
+    ${wasi-sdk}/bin/clang++  \
+      -fPIC -std=c++17 -Wno-deprecated-declarations \
+      -D__wasi__=1 \
       --target=wasm32-unknown-emscripten \
       --sysroot=${wasi-sdk}/share/wasi-sysroot \
-      -D__wasi__=1 \
-      -D__wasm32__=1 \
-      -D_WASI_EMULATED_SIGNAL \
-      -D_WASI_EMULATED_MMAN \
-      -DUSE_DOUBLE=1 \
-      -I${csound-wasm}/include \
       -I${wasi-sdk}/share/wasi-sysroot/include \
-      -I${wasi-sdk}/share/wasi-sysroot/include/c++/v1 \
+      -I${csound-wasm}/include \
       -I./src \
-      -x c++ \
       -c  \
       src/hypercurve.h
 
@@ -50,10 +44,11 @@ in stdenv.mkDerivation {
       --export-if-defined=csoundModuleDestroy \
       -L${wasi-sdk}/share/wasi-sysroot/lib/wasm32-unknown-emscripten \
       -L${csound-wasm}/lib -lcsound-wasm \
-      -lc -lc++ -lc++abi -lrt -lutil -lxnet -lresolv -lc-printscan-long-double \
-      -lwasi-emulated-getpid -lwasi-emulated-signal -lwasi-emulated-mman -lwasi-emulated-process-clocks \
+      -lc -lc++ -lc++abi \
       *.o -o hypercurve.wasm
 
+ # -lrt -lutil -lxnet -lresolv -lc-printscan-long-double \
+ #      -lwasi-emulated-getpid -lwasi-emulated-signal -lwasi-emulated-mman -lwasi-emulated-process-clocks \
   '';
 
   installPhase = ''

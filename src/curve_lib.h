@@ -637,6 +637,7 @@ public:
         #ifndef __wasi__
         throw(std::runtime_error("Unimplemented for Bezier curve"));
         #endif
+        return (double) 1.0;
     }
 
     // This one should be implemented instead of the above one (if wanted to process single bezier point)
