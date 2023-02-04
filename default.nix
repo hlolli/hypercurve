@@ -1,4 +1,4 @@
-{ stdenv, fetchFromGitHub, callPackage }:
+{ stdenv, fetchFromGitHub, callPackage, lib }:
 
 let
   csound7Sources = fetchFromGitHub {
@@ -8,8 +8,15 @@ let
     sha256 = "sha256-kWUeoXOS7fedYQCIaz/Kcb/vk2rJbCzryApQdHe67Lo=";
   };
 
-  wasi-sdk = callPackage "${csound7Sources}/wasm/src/wasi-sdk.nix" { };
-  csound-wasm = callPackage "${csound7Sources}/wasm/src/csound.nix" {};
+  csound6Sources = fetchFromGitHub {
+    owner = "csound";
+    repo = "csound";
+    rev = "74c91c04bdf20386f52aae13da36494a6b5ca4be";
+    sha256 = "sha256-jYQVoBMBDrWptPRVzgKnj7r3iNPp6A06fW0j8Gk7n+U=";
+  };
+
+  wasi-sdk = callPackage "${csound6Sources}/wasm/src/wasi-sdk.nix" { };
+  csound-wasm = callPackage "${csound6Sources}/wasm/src/csound.nix" {};
 
 in stdenv.mkDerivation {
   name = "hypercurve-wasm-plugin";
